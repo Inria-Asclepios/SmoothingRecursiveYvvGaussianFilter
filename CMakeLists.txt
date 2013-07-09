@@ -1,47 +1,57 @@
 project(ITKSmoothingRecursiveYvvGaussianFilter)
 enable_testing()
 
-SET (TRY_RUN_INCLUDES "-I${OPENCL_INCLUDE} ")
-SET (TRY_RUN_LIBS "-DLINK_LIBRARIES:INTERNAL=${OPENCL_LIBRARIES}")
-TRY_RUN(
-    _OPENCL_VERSION_RUN_RESULT _OPENCL_VERSION_RUN_RESULT
-    ${CMAKE_BINARY_DIR}/CMakeTmp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/OpenCLInfo.cpp
-    CMAKE_FLAGS "${TRY_RUN_LIBS}"
-    COMPILE_DEFINITIONS "${TRY_RUN_INCLUDES}"
-)
-MESSAGE(STATUS "------------try run result errors: ${_OPENCL_VERSION_RUN_RESULT}")
+if(ITK_USE_GPU)
+    FIND_PACKAGE(OpenCL)
+    SET(_OPENCL_CPP_INCLUDE_DIRS "${OPENCL_INCLUDE_DIRS}" CACHE PATH "" FORCE)
 
-#The following return values are set in OpenCLInfo.cpp
-#return 0 is "all normal"
-if("${_OPENCL_VERSION_RUN_RESULT}" STREQUAL "0") 
-    SET(GPU_HANDLES_DOUBLE "ON" CACHE BOOL "")
-    add_definitions(-DWITH_DOUBLE)
-    MESSAGE(STATUS "All devices accept double precision.")
+    if (NOT "${OPENCL_INCLUDE_DIRS}" STREQUAL "")
+        SET(ITK_USE_GPU ON CACHE BOOL "" FORCE) 
+    endif()
+
+    SET (TRY_RUN_INCLUDES "-I${OPENCL_INCLUDE_DIRS} ")
+    SET (TRY_RUN_LIBS "-DLINK_LIBRARIES:INTERNAL=${OPENCL_LIBRARIES}")
+
+    MESSAGE(STATUS "Testing for OpenCL support.")
+    MESSAGE(STATUS "Testing for double precision support on GPU.")
+    
+    TRY_RUN(
+        _OPENCL_RUN_RESULT _OPENCL_COMP_RESULT
+        ${CMAKE_BINARY_DIR}/CMakeTmp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/OpenCLInfo.cpp
+        CMAKE_FLAGS "${TRY_RUN_LIBS}"
+        COMPILE_DEFINITIONS "${TRY_RUN_INCLUDES}"
+    )
+
+    MESSAGE(STATUS "Try-compilation returned:" "${_OPENCL_COMP_RESULT}")
+    MESSAGE(STATUS "Try-run returned:" "${_OPENCL_RUN_RESULT}")
+
+    #The following return values are set in OpenCLInfo.cpp
+    #return 0 is "all normal"
+    if("${_OPENCL_RUN_RESULT}" STREQUAL "-1")
+        SET(ITK_USE_GPU "OFF" CACHE BOOL "")
+        MESSAGE(STATUS "No support for OpenCL found.")
+    else()
+        if("${_OPENCL_RUN_RESULT}" STREQUAL "1")
+            SET(GPU_HANDLES_DOUBLE "ON" CACHE BOOL "")
+            add_definitions(-DWITH_DOUBLE)
+            MESSAGE(STATUS "Valid OpenCL device found.")
+            MESSAGE(STATUS "All devices accept double precision.")
+        endif()        
+    endif()
 endif()
 
-if("${_OPENCL_VERSION_RUN_RESULT}" STREQUAL "100") 
-    SET(ITK_USE_GPU "OFF" CACHE BOOL "")
-    MESSAGE(STATUS "No opencl-capable devices found.")
-else()
-    SET(ITK_USE_GPU "ON" CACHE BOOL "")
-endif()
+MESSAGE(STATUS "Using OpenCL: ${ITK_USE_GPU}")       
 
-if (NOT "${_OPENCL_CPP_INCLUDE_DIRS}" STREQUAL "")
-    SET(WITH_OPENCL ON CACHE BOOL "" FORCE) 
-endif()
-
-MESSAGE(STATUS "Using OpenCL: ${WITH_OPENCL}")       
-
-if (ITK_USE_GPU AND WITH_OPENCL)
-
+#ITK_USE_GPU could have been toggled off during the test run.
+if (ITK_USE_GPU AND OPENCL_FOUND)
   set(ITKSmoothingRecursiveYvvGaussianFilter_LIBRARIES ITKSmoothingRecursiveYvvGaussianFilter)
   set(ITKSmoothingRecursiveYvvGaussianFilter_SYSTEM_INCLUDE_DIRS ${OPENCL_INCLUDE_DIRS})
   set(ITKSmoothingRecursiveYvvGaussianFilter_SYSTEM_LIBRARY_DIRS ${OPENCL_LIBRARIES})
   set(ITKSmoothingRecursiveYvvGaussianFilterKernelDir "${CMAKE_CURRENT_BINARY_DIR}/src" CACHE PATH "" FORCE)
 
-  option(NVIDIA_GPU "Uncheck if your GPU is not NVidia (affects optimizations)." TRUE)
-    #option(GPU_HANDLES_DOUBLE "GPU handles double precision (i.e. calculation capability 1.3 or better)." FALSE)
+  option(NVIDIA_GPU "Check if your GPU is NVidia (affects optimizations). Default: true." TRUE)
+  #option(GPU_HANDLES_DOUBLE "GPU handles double precision (i.e. calculation capability 1.3 or better)." FALSE)
 
 endif()
 
