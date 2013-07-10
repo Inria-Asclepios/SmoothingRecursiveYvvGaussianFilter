@@ -1,6 +1,6 @@
 itk_module_test()
 
-if (ITK_USE_GPU AND WITH_OPENCL)
+if (ITK_USE_GPU)
 
   ADD_DEFINITIONS(-DGPU)
   
@@ -62,7 +62,7 @@ itk_add_test(NAME itkYvvWhiteImageTest3D
       itkYvvWhiteImageTest
       3 12.0 5 256 256 16)
       
-if (ITK_USE_GPU AND WITH_OPENCL)
+if (ITK_USE_GPU)
 
     itk_add_test(NAME itkGPURecursiveYvvGaussianImageFilterTest
         COMMAND ${itk-module}TestDriver
