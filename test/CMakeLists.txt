@@ -13,7 +13,7 @@ if (ITK_USE_GPU)
       MESSAGE(STATUS "NVIDIA platform detected")
   endif() 
 
-  INCLUDE_DIRECTORIES("${ITKSmoothingRecursiveYvvGaussianFilter_SOURCE_DIR}/include")
+  INCLUDE_DIRECTORIES("${ITKSmoothingRecursiveYvvGaussianFilter_SOURCE_DIR}/include/")
   INCLUDE_DIRECTORIES("${ITKSmoothingRecursiveYvvGaussianFilterKernelDir}")  
 
   SET(ITK${itk-module}Tests
@@ -27,6 +27,7 @@ else()
     SET(ITK${itk-module}Tests
     itkCPURecursiveYvvGaussianImageFilterTest.cxx
     itkYvvBenchmark.cxx
+    itkYvvWhiteImageTest.cxx
     )
 endif()
 

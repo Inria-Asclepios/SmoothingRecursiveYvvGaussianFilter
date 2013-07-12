@@ -1,3 +1,4 @@
+#ifdef GPU
 
 #ifndef _ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
 #define _ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
@@ -6,9 +7,9 @@
 #include "itkPixelTraits.h"
 #include "itkCommand.h"
 #include "itkFixedArray.h"
-#include "itkGPUImageToImageFilter.h"
-#include "itkOpenCLUtil.h"
 #include "itkSmoothingRecursiveYvvGaussianImageFilter.h"
+#include "itkOpenCLUtil.h"
+#include "itkGPUImageToImageFilter.h"
 
 
 namespace itk
@@ -153,7 +154,8 @@ namespace itk
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkGPUSmoothingRecursiveYvvGaussianImageFilter.hxx"
+    #include "itkGPUSmoothingRecursiveYvvGaussianImageFilter.hxx"
 #endif
 
-#endif
+#endif //_ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
+#endif    //GPU

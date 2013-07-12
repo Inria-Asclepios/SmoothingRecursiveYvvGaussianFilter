@@ -44,7 +44,7 @@ endif()
 MESSAGE(STATUS "Using OpenCL: ${ITK_USE_GPU}")       
 
 #ITK_USE_GPU could have been toggled off during the test run.
-if (ITK_USE_GPU AND OPENCL_FOUND)
+if (ITK_USE_GPU)# AND OPENCL_FOUND)
   set(ITKSmoothingRecursiveYvvGaussianFilter_LIBRARIES ITKSmoothingRecursiveYvvGaussianFilter)
   set(ITKSmoothingRecursiveYvvGaussianFilter_SYSTEM_INCLUDE_DIRS ${OPENCL_INCLUDE_DIRS})
   set(ITKSmoothingRecursiveYvvGaussianFilter_SYSTEM_LIBRARY_DIRS ${OPENCL_LIBRARIES})
