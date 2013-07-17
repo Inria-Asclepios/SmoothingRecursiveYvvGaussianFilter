@@ -1,4 +1,6 @@
-project(ITKSmoothingRecursiveYvvGaussianFilter)
+project(SmoothingRecursiveYvvGaussianFilter)
+itk_module_impl()
+
 enable_testing()
 
 if(ITK_USE_GPU)
@@ -6,7 +8,7 @@ if(ITK_USE_GPU)
     SET(_OPENCL_CPP_INCLUDE_DIRS "${OPENCL_INCLUDE_DIRS}" CACHE PATH "" FORCE)
 
     if (NOT "${OPENCL_INCLUDE_DIRS}" STREQUAL "")
-        SET(ITK_USE_GPU ON CACHE BOOL "" FORCE) 
+        SET(ITK_USE_GPU ON CACHE BOOL "" FORCE)
     endif()
 
     SET (TRY_RUN_INCLUDES "-I${OPENCL_INCLUDE_DIRS} ")
@@ -14,7 +16,7 @@ if(ITK_USE_GPU)
 
     MESSAGE(STATUS "Testing for OpenCL support.")
     MESSAGE(STATUS "Testing for double precision support on GPU.")
-    
+
     TRY_RUN(
         _OPENCL_RUN_RESULT _OPENCL_COMP_RESULT
         ${CMAKE_BINARY_DIR}/CMakeTmp
@@ -37,25 +39,18 @@ if(ITK_USE_GPU)
             add_definitions(-DWITH_DOUBLE)
             MESSAGE(STATUS "Valid OpenCL device found.")
             MESSAGE(STATUS "All devices accept double precision.")
-        endif()        
+        endif()
     endif()
 endif()
 
-MESSAGE(STATUS "Using OpenCL: ${ITK_USE_GPU}")       
+MESSAGE(STATUS "Using OpenCL: ${ITK_USE_GPU}")
 
 #ITK_USE_GPU could have been toggled off during the test run.
-if (ITK_USE_GPU)# AND OPENCL_FOUND)
-  set(ITKSmoothingRecursiveYvvGaussianFilter_LIBRARIES ITKSmoothingRecursiveYvvGaussianFilter)
-  set(ITKSmoothingRecursiveYvvGaussianFilter_SYSTEM_INCLUDE_DIRS ${OPENCL_INCLUDE_DIRS})
-  set(ITKSmoothingRecursiveYvvGaussianFilter_SYSTEM_LIBRARY_DIRS ${OPENCL_LIBRARIES})
-  set(ITKSmoothingRecursiveYvvGaussianFilterKernelDir "${CMAKE_CURRENT_BINARY_DIR}/src" CACHE PATH "" FORCE)
+if (ITK_USE_GPU)
+  set(SmoothingRecursiveYvvGaussianFilter_LIBRARIES SmoothingRecursiveYvvGaussianFilter)
+  set(SmoothingRecursiveYvvGaussianFilter_SYSTEM_INCLUDE_DIRS ${OPENCL_INCLUDE_DIRS})
+  set(SmoothingRecursiveYvvGaussianFilter_SYSTEM_LIBRARY_DIRS ${OPENCL_LIBRARIES})
+  set(SmoothingRecursiveYvvGaussianFilter "${CMAKE_CURRENT_BINARY_DIR}/src" CACHE PATH "" FORCE)
 
   option(NVIDIA_GPU "Check if your GPU is NVidia (affects optimizations). Default: true." TRUE)
-  #option(GPU_HANDLES_DOUBLE "GPU handles double precision (i.e. calculation capability 1.3 or better)." FALSE)
-
 endif()
-
-#set(TEST_DATA_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/Data" CACHE PATH "")
-itk_module_impl()
-
-#add_subdirectory(Example)
