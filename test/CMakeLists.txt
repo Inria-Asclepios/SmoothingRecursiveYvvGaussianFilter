@@ -3,18 +3,18 @@ itk_module_test()
 if (ITK_USE_GPU)
 
   ADD_DEFINITIONS(-DGPU)
-  
+
   if(GPU_HANDLES_DOUBLE)
      add_definitions(-DWITH_DOUBLE)
   endif()
- 
+
   if(NVIDIA_GPU)
       add_definitions(-DNVIDIA)
       MESSAGE(STATUS "NVIDIA platform detected")
-  endif() 
+  endif()
 
-  INCLUDE_DIRECTORIES("${ITKSmoothingRecursiveYvvGaussianFilter_SOURCE_DIR}/include/")
-  INCLUDE_DIRECTORIES("${ITKSmoothingRecursiveYvvGaussianFilterKernelDir}")  
+  INCLUDE_DIRECTORIES("${${itk-module}_SOURCE_DIR}/include")
+  INCLUDE_DIRECTORIES("${${itk-module}KernelDir}")
 
   SET(ITK${itk-module}Tests
     itkCPURecursiveYvvGaussianImageFilterTest.cxx
@@ -38,18 +38,18 @@ CreateTestDriver(${itk-module} "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-mod
 itk_add_test(NAME itkCPURecursiveYvvGaussianImageFilterTest
   COMMAND ${itk-module}TestDriver
       itkCPURecursiveYvvGaussianImageFilterTest
-      ${TEST_DATA_ROOT}/1024ex.jpg 
-      2 
-      12.0 
+      ${TEST_DATA_ROOT}/1024ex.jpg
+      2
+      12.0
       20
       )
 
 itk_add_test(NAME itkYvvBenchmark
     COMMAND ${itk-module}TestDriver
     itkYvvBenchmark
-    ${TEST_DATA_ROOT}/1024ex.jpg 
-    2 
-    12.0 
+    ${TEST_DATA_ROOT}/1024ex.jpg
+    2
+    12.0
     30
     )
 
@@ -62,23 +62,23 @@ itk_add_test(NAME itkYvvWhiteImageTest3D
     COMMAND ${itk-module}TestDriver
       itkYvvWhiteImageTest
       3 12.0 5 256 256 16)
-      
+
 if (ITK_USE_GPU)
 
     itk_add_test(NAME itkGPURecursiveYvvGaussianImageFilterTest
         COMMAND ${itk-module}TestDriver
         itkGPURecursiveYvvGaussianImageFilterTest
-        ${TEST_DATA_ROOT}/1024ex.jpg 
-        2 
-        12.0 
+        ${TEST_DATA_ROOT}/1024ex.jpg
+        2
+        12.0
         1
         )
 
     itk_add_test(NAME itkYvvGpuCpuSimilarityTest
         COMMAND ${itk-module}TestDriver
         itkYvvGpuCpuSimilarityTest
-        ${TEST_DATA_ROOT}/1024ex.jpg 
-        2 
+        ${TEST_DATA_ROOT}/1024ex.jpg
+        2
         0.5
         )
 endif()

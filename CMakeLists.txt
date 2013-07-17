@@ -1,6 +1,4 @@
-project(SmoothingRecursiveYvvGaussianFilter)
-itk_module_impl()
-
+project(ITKSmoothingRecursiveYvvGaussianFilter)
 enable_testing()
 
 if(ITK_USE_GPU)
@@ -47,10 +45,15 @@ MESSAGE(STATUS "Using OpenCL: ${ITK_USE_GPU}")
 
 #ITK_USE_GPU could have been toggled off during the test run.
 if (ITK_USE_GPU)
-  set(SmoothingRecursiveYvvGaussianFilter_LIBRARIES SmoothingRecursiveYvvGaussianFilter)
-  set(SmoothingRecursiveYvvGaussianFilter_SYSTEM_INCLUDE_DIRS ${OPENCL_INCLUDE_DIRS})
-  set(SmoothingRecursiveYvvGaussianFilter_SYSTEM_LIBRARY_DIRS ${OPENCL_LIBRARIES})
-  set(SmoothingRecursiveYvvGaussianFilter "${CMAKE_CURRENT_BINARY_DIR}/src" CACHE PATH "" FORCE)
+  set(${itk-module}_LIBRARIES ${itk-module})
+  set(${itk-module}_SYSTEM_INCLUDE_DIRS ${OPENCL_INCLUDE_DIRS})
+  set(${itk-module}_SYSTEM_LIBRARY_DIRS ${OPENCL_LIBRARIES})
+  set(${itk-module}KernelDir "${CMAKE_CURRENT_BINARY_DIR}/src" CACHE PATH "" FORCE)
 
   option(NVIDIA_GPU "Check if your GPU is NVidia (affects optimizations). Default: true." TRUE)
 endif()
+
+MESSAGE(STATUS "----------- itk-module: ${itk-module}")
+MESSAGE(STATUS "----------- itk-module_libs: ${itk-module}_LIBRARIES")
+
+itk_module_impl()
