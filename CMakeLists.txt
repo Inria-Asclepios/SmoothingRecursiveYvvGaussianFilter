@@ -1,5 +1,5 @@
 project(ITKSmoothingRecursiveYvvGaussianFilter)
-#enable_testing()
+enable_testing()
 
 if(ITK_USE_GPU)
     FIND_PACKAGE(OpenCL)
