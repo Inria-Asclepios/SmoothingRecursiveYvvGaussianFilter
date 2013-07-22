@@ -1,5 +1,5 @@
 project(ITKSmoothingRecursiveYvvGaussianFilter)
-enable_testing()
+#enable_testing()
 
 if(ITK_USE_GPU)
     FIND_PACKAGE(OpenCL)
@@ -52,8 +52,4 @@ if (ITK_USE_GPU)
 
   option(NVIDIA_GPU "Check if your GPU is NVidia (affects optimizations). Default: true." TRUE)
 endif()
-
-MESSAGE(STATUS "----------- itk-module: ${itk-module}")
-MESSAGE(STATUS "----------- itk-module_libs: ${itk-module}_LIBRARIES")
-
 itk_module_impl()

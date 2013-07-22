@@ -16,7 +16,7 @@ if (ITK_USE_GPU)
   INCLUDE_DIRECTORIES("${${itk-module}_SOURCE_DIR}/include")
   INCLUDE_DIRECTORIES("${${itk-module}KernelDir}")
 
-  SET(ITK${itk-module}Tests
+  SET(${itk-module}Tests
     itkCPURecursiveYvvGaussianImageFilterTest.cxx
     itkGPURecursiveYvvGaussianImageFilterTest.cxx
     itkYvvGpuCpuSimilarityTest.cxx
@@ -24,48 +24,58 @@ if (ITK_USE_GPU)
     itkYvvWhiteImageTest.cxx
     )
 else()
-    SET(ITK${itk-module}Tests
+    SET(${itk-module}Tests
     itkCPURecursiveYvvGaussianImageFilterTest.cxx
     itkYvvBenchmark.cxx
     itkYvvWhiteImageTest.cxx
     )
 endif()
 
+#set(ITK_TEST_DRIVER itkTestDriver)
+
+CreateTestDriver(${itk-module} "${${itk-module}-Test_LIBRARIES}" "${${itk-module}Tests}")
 SET(TEST_DATA_ROOT "${${itk-module}_SOURCE_DIR}/Data")
 
-CreateTestDriver(${itk-module} "${${itk-module}-Test_LIBRARIES}" "${ITK${itk-module}Tests}")
-
-itk_add_test(NAME itkCPURecursiveYvvGaussianImageFilterTest
+itk_add_test(NAME itkCPURecursiveYvvGaussianImageFilterTest2D
   COMMAND ${itk-module}TestDriver
       itkCPURecursiveYvvGaussianImageFilterTest
       ${TEST_DATA_ROOT}/1024ex.jpg
       2
       12.0
-      20
+      4
       )
 
-itk_add_test(NAME itkYvvBenchmark
+itk_add_test(NAME itkYvvBenchmark2D
     COMMAND ${itk-module}TestDriver
     itkYvvBenchmark
     ${TEST_DATA_ROOT}/1024ex.jpg
     2
     12.0
-    30
+    4
+    )
+
+itk_add_test(NAME itkYvvBenchmark3D
+    COMMAND ${itk-module}TestDriver
+    itkYvvBenchmark
+    ${TEST_DATA_ROOT}/256x256x64.tif
+    3
+    12.0
+    2
     )
 
 itk_add_test(NAME itkYvvWhiteImageTest2D
     COMMAND ${itk-module}TestDriver
       itkYvvWhiteImageTest
-      2 12.0 80 512 512)
+      2 12.0 6 512 512)
 
 itk_add_test(NAME itkYvvWhiteImageTest3D
     COMMAND ${itk-module}TestDriver
       itkYvvWhiteImageTest
-      3 12.0 5 256 256 16)
+      3 12.0 2 256 256 16)
 
 if (ITK_USE_GPU)
 
-    itk_add_test(NAME itkGPURecursiveYvvGaussianImageFilterTest
+    itk_add_test(NAME itkGPURecursiveYvvGaussianImageFilterTest2D
         COMMAND ${itk-module}TestDriver
         itkGPURecursiveYvvGaussianImageFilterTest
         ${TEST_DATA_ROOT}/1024ex.jpg
@@ -74,7 +84,7 @@ if (ITK_USE_GPU)
         1
         )
 
-    itk_add_test(NAME itkYvvGpuCpuSimilarityTest
+    itk_add_test(NAME itkYvvGpuCpuSimilarityTest2D
         COMMAND ${itk-module}TestDriver
         itkYvvGpuCpuSimilarityTest
         ${TEST_DATA_ROOT}/1024ex.jpg

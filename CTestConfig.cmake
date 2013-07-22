@@ -2,12 +2,12 @@
 ## Then modify the CMakeLists.txt file in the root directory of your
 ## project to incorporate the testing dashboard.
 ## # The following are required to uses Dart and the Cdash dashboard
-#ENABLE_TESTING()
-#INCLUDE(CTest)
+##ENABLE_TESTING()
+##INCLUDE(CTest)
 set(CTEST_PROJECT_NAME "ITKSmoothingRecursiveYvvGaussianFilter")
 set(CTEST_NIGHTLY_START_TIME "2:00:00 UTC")
 
 set(CTEST_DROP_METHOD "http")
 set(CTEST_DROP_SITE "my.cdash.org")
-set(CTEST_DROP_LOCATION "/submit.php?project=ITKSmoothingRecursiveYvvGaussianFilter")
+set(CTEST_DROP_LOCATION "/submit.php?project=SmoothingRecursiveYvvGaussianFilter")
 set(CTEST_DROP_SITE_CDASH TRUE)
