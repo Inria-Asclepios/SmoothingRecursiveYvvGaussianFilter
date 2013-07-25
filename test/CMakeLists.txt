@@ -36,6 +36,7 @@ endif()
 CreateTestDriver(${itk-module} "${${itk-module}-Test_LIBRARIES}" "${${itk-module}Tests}")
 SET(TEST_DATA_ROOT "${${itk-module}_SOURCE_DIR}/Data")
 
+#Common tests for CPU and/or GPU
 itk_add_test(NAME itkCPURecursiveYvvGaussianImageFilterTest2D
   COMMAND ${itk-module}TestDriver
       itkCPURecursiveYvvGaussianImageFilterTest
@@ -74,13 +75,21 @@ itk_add_test(NAME itkYvvWhiteImageTest3D
       3 12.0 2 256 256 16)
 
 if (ITK_USE_GPU)
-
+    itk_add_test(NAME itkGPURecursiveYvvGaussianImageFilterTest2DLow
+        COMMAND ${itk-module}TestDriver
+        itkGPURecursiveYvvGaussianImageFilterTest
+        ${TEST_DATA_ROOT}/1024ex.jpg
+        2
+        0.5 #Lower limit for sigma
+        1
+        )
+        
     itk_add_test(NAME itkGPURecursiveYvvGaussianImageFilterTest2D
         COMMAND ${itk-module}TestDriver
         itkGPURecursiveYvvGaussianImageFilterTest
         ${TEST_DATA_ROOT}/1024ex.jpg
         2
-        12.0
+        20
         1
         )
 
@@ -89,6 +98,6 @@ if (ITK_USE_GPU)
         itkYvvGpuCpuSimilarityTest
         ${TEST_DATA_ROOT}/1024ex.jpg
         2
-        0.5
+        16
         )
 endif()

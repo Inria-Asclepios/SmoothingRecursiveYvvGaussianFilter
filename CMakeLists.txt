@@ -23,8 +23,8 @@ if(ITK_USE_GPU)
         COMPILE_DEFINITIONS "${TRY_RUN_INCLUDES}"
     )
 
-    MESSAGE(STATUS "Try-compilation returned:" "${_OPENCL_COMP_RESULT}")
-    MESSAGE(STATUS "Try-run returned:" "${_OPENCL_RUN_RESULT}")
+    #MESSAGE(STATUS "Try-compilation returned:" "${_OPENCL_COMP_RESULT}")
+    #MESSAGE(STATUS "Try-run returned:" "${_OPENCL_RUN_RESULT}")
 
     #The following return values are set in OpenCLInfo.cpp
     #return 0 is "all normal"
@@ -37,11 +37,18 @@ if(ITK_USE_GPU)
             add_definitions(-DWITH_DOUBLE)
             MESSAGE(STATUS "Valid OpenCL device found.")
             MESSAGE(STATUS "All devices accept double precision.")
+        else()
+            if("${_OPENCL_RUN_RESULT}" STREQUAL "20")
+                SET(GPU_HANDLES_DOUBLE "OFF" CACHE BOOL "")
+                MESSAGE(STATUS "Valid OpenCL device found.")
+                MESSAGE(STATUS "Double-precision not supported on GPU.")
+            endif()
         endif()
     endif()
 endif()
 
 MESSAGE(STATUS "Using OpenCL: ${ITK_USE_GPU}")
+MESSAGE(STATUS "GPU double precision: ${GPU_HANDLES_DOUBLE}")
 
 #ITK_USE_GPU could have been toggled off during the test run.
 if (ITK_USE_GPU)
