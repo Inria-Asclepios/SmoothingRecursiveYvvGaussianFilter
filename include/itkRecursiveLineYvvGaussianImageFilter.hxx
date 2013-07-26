@@ -184,6 +184,7 @@ namespace itk
             outs[i] = scratch[i];
 
 
+        // AntiCausal direction pass
          
         // Handle outside values according to Triggs and Sdika
         const ScalarRealType u_p = data[ln-1] / (1.0 - m_B1 - m_B2 - m_B3);
