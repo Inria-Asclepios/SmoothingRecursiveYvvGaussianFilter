@@ -58,5 +58,8 @@ if (ITK_USE_GPU)
   set(${itk-module}KernelDir "${CMAKE_CURRENT_BINARY_DIR}/src" CACHE PATH "" FORCE)
 
   option(NVIDIA_GPU "Check if your GPU is NVidia (affects optimizations). Default: true." TRUE)
+else()
+    #No GPU, but CPU user will probably want double-precision.
+    add_definitions(-DWITH_DOUBLE)
 endif()
 itk_module_impl()
