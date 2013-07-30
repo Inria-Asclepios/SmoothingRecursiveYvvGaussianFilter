@@ -6,9 +6,9 @@ This is a module designed to work with the ITK v4 modular system; it implements 
 Build
 -----
 
-The preferred way to build this module is activating the option Fetch_SmoothingRecursiveYvvGaussianFilter during CMake configuration of ITK. The module will be downloaded and compiled with all other ITK modules.
+Option 1: The preferred way to build this module is activating the option Fetch_SmoothingRecursiveYvvGaussianFilter during CMake configuration of ITK. The module will be downloaded (to [ITK_root]/Modules/Remote/) and compiled with all other ITK modules.
 
-A secondary way is downloading the latest version from this repository and placing the module in [ITK_root]/Modules/External/. You should then configure and compile ITK as normal.
+Option 2: A secondary way is downloading the latest version from this repository and placing the module in [ITK_root]/Modules/External/. You should then configure and compile ITK as normal.
 
 If you would like to test the GPU smoothing filter, make sure to check ITK_USE_GPU during configuration and to provide a path to a valid OpenCL installation (libraries and include directories). To do this you may have to toggle advanced mode on CMake.
 
