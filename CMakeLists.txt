@@ -1,4 +1,4 @@
-project(ITKSmoothingRecursiveYvvGaussianFilter)
+project(SmoothingRecursiveYvvGaussianFilter)
 enable_testing()
 
 if(ITK_USE_GPU)
