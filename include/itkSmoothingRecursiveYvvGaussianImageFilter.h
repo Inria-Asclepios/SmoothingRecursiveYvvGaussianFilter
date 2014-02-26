@@ -15,6 +15,7 @@
 * limitations under the License.
 *
 *=========================================================================*/
+#pragma once
 
 #ifndef _ITK_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
 #define _ITK_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
@@ -47,12 +48,12 @@ namespace itk
     template <typename TInputImage,
     typename TOutputImage= TInputImage >
     class ITK_EXPORT SmoothingRecursiveYvvGaussianImageFilter:
-    public ImageToImageFilter<TInputImage,TOutputImage>
+    public InPlaceImageFilter<TInputImage,TOutputImage>
     {
     public:
         /** Standard class typedefs. */
         typedef SmoothingRecursiveYvvGaussianImageFilter             Self;
-        typedef ImageToImageFilter<TInputImage,TOutputImage>      Superclass;
+        typedef InPlaceImageFilter<TInputImage,TOutputImage>      Superclass;
         typedef SmartPointer<Self>                                Pointer;
         typedef SmartPointer<const Self>                          ConstPointer;
 
@@ -71,7 +72,7 @@ namespace itk
 
         /** Runtime information support. */
         itkTypeMacro(SmoothingRecursiveYvvGaussianImageFilter,
-                     ImageToImageFilter);
+                     InPlaceImageFilter);
 
         /** Image dimension. */
         itkStaticConstMacro(ImageDimension, unsigned int,
@@ -86,8 +87,7 @@ namespace itk
          Here we prefer float in order to save memory.  */
 
         typedef typename NumericTraits< PixelType >::FloatType   InternalRealType;
-        typedef Image<InternalRealType,
-        itkGetStaticConstMacro(ImageDimension) >   RealImageType;
+        typedef typename InputImageType::template Rebind<InternalRealType>::Type RealImageType;
 
         /**  The first in the pipeline  */
         typedef RecursiveLineYvvGaussianImageFilter<
@@ -136,8 +136,11 @@ namespace itk
         void SetNormalizeAcrossScale( bool normalizeInScaleSpace );
         itkGetConstMacro( NormalizeAcrossScale, bool );
 
-        void SetNumberOfThreads( int nb );
-        using Superclass::SetNumberOfThreads;
+        void SetNumberOfThreads( ThreadIdType nb );
+
+        // See super class for doxygen documentation
+        //
+        virtual bool CanRunInPlace( void ) const;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
         /** Begin concept checking */

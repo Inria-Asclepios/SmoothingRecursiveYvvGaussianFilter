@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _ITK_RECURSIVE_LINE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
 #define _ITK_RECURSIVE_LINE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
 
@@ -21,6 +22,9 @@ namespace itk
         this->SetNumberOfRequiredOutputs( 1 );
         this->SetNumberOfRequiredInputs( 1 );
         
+        this->InPlaceOff();
+        
+        m_ImageRegionSplitter = ImageRegionSplitterDirection::New();
         #ifdef VERBOSE
             std::cout<<"-----------Line filter TYPES\n";        
             
@@ -98,7 +102,7 @@ namespace itk
             q = 0.0561 * sigmad * sigmad + 0.5784 * sigmad - 0.2568;
         }
 
-        // Compute B and B0 to B3 according to Young et al 1995
+        // Compute B and B1 to B3 according to Young et al 2003
         ScalarRealType m0 = 1.16680;
         ScalarRealType m1 = 1.10783;
         ScalarRealType m2 = 1.40586;
@@ -113,7 +117,6 @@ namespace itk
 
         // M Matrix for initialization on backward pass, from Triggs and Sdika, IEEE TSP
         m_MMatrix = vnl_matrix <ScalarRealType> (3,3);
-        //const ScalarRealType factor = (1 + m_B1 - m_B2 + m_B3) * (1 - m_B1 - m_B2 - m_B3) * (1 + m_B2 + (m_B1 - m_B3) * m_B3);
         
         m_MMatrix(0,0) = - m_B3 * m_B1 + 1 - m_B3 * m_B3 - m_B2;
         m_MMatrix(0,1) = (m_B3 + m_B1) * (m_B2 + m_B3 * m_B1);
@@ -262,67 +265,16 @@ namespace itk
 
 
     template <typename TInputImage, typename TOutputImage>
-    unsigned int
+    const ImageRegionSplitterBase *
     RecursiveLineYvvGaussianImageFilter<TInputImage,TOutputImage>
-    ::SplitRequestedRegion(unsigned int i, unsigned int num, OutputImageRegionType& splitRegion)
+    ::GetImageRegionSplitter(void) const
     {
 /*
 #ifdef VERBOSE
         std::cout<<telltale  << ". itkRecursiveLineYvv::SplitRequestedRegion \n";
 #endif
 */
-        // Get the output pointer
-        OutputImageType * outputPtr = this->GetOutput();
-        const typename TOutputImage::SizeType& requestedRegionSize
-        = outputPtr->GetRequestedRegion().GetSize();
-
-        int splitAxis;
-        typename TOutputImage::IndexType splitIndex;
-        typename TOutputImage::SizeType splitSize;
-
-        // Initialize the splitRegion to the output requested region
-        splitRegion = outputPtr->GetRequestedRegion();
-        splitIndex = splitRegion.GetIndex();
-        splitSize = splitRegion.GetSize();
-
-        // split on the outermost dimension available
-        // and avoid the current dimension
-        splitAxis = outputPtr->GetImageDimension() - 1;
-        while (requestedRegionSize[splitAxis] == 1 || splitAxis == (int)m_Direction)
-        {
-            --splitAxis;
-            if (splitAxis < 0)
-            { // cannot split
-                itkDebugMacro("  Cannot Split");
-                return 1;
-            }
-        }
-
-        // determine the actual number of pieces that will be generated
-        typename TOutputImage::SizeType::SizeValueType range = requestedRegionSize[splitAxis];
-        int valuesPerThread = (int)vcl_ceil(range/(double)num);
-        unsigned int maxThreadIdUsed = (int)vcl_ceil(range/(double)valuesPerThread) - 1;
-
-        // Split the region
-        if (i < maxThreadIdUsed)
-        {
-            splitIndex[splitAxis] += i*valuesPerThread;
-            splitSize[splitAxis] = valuesPerThread;
-        }
-        if (i == maxThreadIdUsed)
-        {
-            splitIndex[splitAxis] += i*valuesPerThread;
-            // last thread needs to process the "rest" dimension being split
-            splitSize[splitAxis] = splitSize[splitAxis] - i*valuesPerThread;
-        }
-
-        // set the split region ivars
-        splitRegion.SetIndex( splitIndex );
-        splitRegion.SetSize( splitSize );
-
-        itkDebugMacro("  Split Piece: " << splitRegion );
-
-        return maxThreadIdUsed + 1;
+        return this->m_ImageRegionSplitter;
     }
 
 
@@ -348,9 +300,9 @@ namespace itk
             itkExceptionMacro("Direction selected for filtering is greater than ImageDimension");
         }
 
-        const typename InputImageType::SpacingType & pixelSize
-        = inputImage->GetSpacing();
+        const typename InputImageType::SpacingType & pixelSize = inputImage->GetSpacing();
 
+        this->m_ImageRegionSplitter->SetDirection(m_Direction);
         this->SetUp( pixelSize[m_Direction] );
 
         RegionType region = outputImage->GetRequestedRegion();
@@ -436,9 +388,7 @@ namespace itk
         inputIterator.GoToBegin();
         outputIterator.GoToBegin();
 
-        const typename TInputImage::OffsetValueType * offsetTable = inputImage->GetOffsetTable();
-
-        const unsigned int numberOfLinesToProcess = offsetTable[ TInputImage::ImageDimension ] / ln;
+        const unsigned int numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / outputRegionForThread.GetSize(this->m_Direction);
         ProgressReporter progress(this, threadId, numberOfLinesToProcess, 10 );
 
 

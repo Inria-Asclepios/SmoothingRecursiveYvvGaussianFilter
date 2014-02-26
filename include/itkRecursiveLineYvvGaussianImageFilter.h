@@ -16,11 +16,13 @@
 *
 *=========================================================================*/
 
+#pragma once
 #ifndef _ITK_RECURSIVE_LINE_YVV_GAUSSIAN_IMAGE_FILTER_H_
 #define _ITK_RECURSIVE_LINE_YVV_GAUSSIAN_IMAGE_FILTER_H_
 
-#include "itkImageToImageFilter.h"
-#include "itkNumericTraits.h"
+#include <itkInPlaceImageFilter.h>
+#include <itkNumericTraits.h>
+#include <itkImageRegionSplitterDirection.h>
 
 namespace itk
 {
@@ -44,12 +46,12 @@ namespace itk
  
     template <typename TInputImage, typename TOutputImage=TInputImage>
     class ITK_EXPORT RecursiveLineYvvGaussianImageFilter :
-    public ImageToImageFilter<TInputImage,TOutputImage>
+    public InPlaceImageFilter<TInputImage,TOutputImage> 
     {
     public:
         /** Standard class typedefs. */
         typedef RecursiveLineYvvGaussianImageFilter                  Self;
-        typedef ImageToImageFilter<TInputImage,TOutputImage>   Superclass;
+        typedef InPlaceImageFilter<TInputImage,TOutputImage>   Superclass;
         typedef SmartPointer<Self>                             Pointer;
         typedef SmartPointer<const Self>                       ConstPointer;
 
@@ -57,7 +59,7 @@ namespace itk
         itkNewMacro(Self);
 
         /** Type macro that defines a name for this class. */
-        itkTypeMacro( RecursiveLineYvvGaussianImageFilter, ImageToImageFilter );
+        itkTypeMacro(RecursiveLineYvvGaussianImageFilter, InPlaceImageFilter);
 
         /** Smart pointer typedef support.  */
         typedef typename TInputImage::Pointer       InputImagePointer;
@@ -129,7 +131,7 @@ namespace itk
         void BeforeThreadedGenerateData();
         void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId );
 
-        unsigned int SplitRequestedRegion(unsigned int i,unsigned  int num, OutputImageRegionType& splitRegion);
+        virtual const ImageRegionSplitterBase* GetImageRegionSplitter(void) const;
 
         /** RecursiveLineYvvGaussianImageFilter needs all of the input only in the
          *  "Direction" dimension. Therefore we enlarge the output's
@@ -179,7 +181,7 @@ namespace itk
 
         /** Normalize the image across scale space */
         bool m_NormalizeAcrossScale;
-        //int telltale; //TODO: REMOVE
+        ImageRegionSplitterDirection::Pointer m_ImageRegionSplitter;
     };
 
 
