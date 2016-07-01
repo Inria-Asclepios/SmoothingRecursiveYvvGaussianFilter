@@ -174,12 +174,9 @@ protected:
   GPUDataPointer m_GPUBCoefficientsDataManager;
   GPUDataPointer m_GPULocalDataManager;
 private:
-  GPUSmoothingRecursiveYvvGaussianImageFilter(const Self &);      //purposely
-                                                                  // not
-                                                                  // implemented
-  void BuildKernel();
+  ITK_DISALLOW_COPY_AND_ASSIGN(GPUSmoothingecursiveYvvGaussianImageFilter);
 
-  void operator=(const Self &);      //purposely not implemented
+  void BuildKernel();
 
   /** Normalize the image across scale space */
   bool m_NormalizeAcrossScale;
