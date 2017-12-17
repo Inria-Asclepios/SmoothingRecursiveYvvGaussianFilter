@@ -121,15 +121,15 @@ public:
   itkSetMacro(Sigma, ScalarRealType);
 protected:
   RecursiveLineYvvGaussianImageFilter();
-  ~RecursiveLineYvvGaussianImageFilter() ITK_OVERRIDE {}
-  void PrintSelf(std::ostream & os, Indent indent) const ITK_OVERRIDE;
+  ~RecursiveLineYvvGaussianImageFilter() override {}
+  void PrintSelf(std::ostream & os, Indent indent) const override;
 
   /** GenerateData (apply) the filter. */
-  void BeforeThreadedGenerateData() ITK_OVERRIDE;
+  void BeforeThreadedGenerateData() override;
 
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId) ITK_OVERRIDE;
+  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId) override;
 
-  const ImageRegionSplitterBase * GetImageRegionSplitter(void) const ITK_OVERRIDE;
+  const ImageRegionSplitterBase * GetImageRegionSplitter(void) const override;
 
   /** RecursiveLineYvvGaussianImageFilter needs all of the input only in the
    *  "Direction" dimension. Therefore we enlarge the output's
@@ -139,7 +139,7 @@ protected:
    *
    * \sa ImageToImageFilter::GenerateInputRequestedRegion()
    */
-  void EnlargeOutputRequestedRegion(DataObject *output) ITK_OVERRIDE;
+  void EnlargeOutputRequestedRegion(DataObject *output) override;
 
   /** Set up the coefficients of the filter to approximate a specific kernel.
    * Typically it can be used to approximate a Gaussian or one of its
