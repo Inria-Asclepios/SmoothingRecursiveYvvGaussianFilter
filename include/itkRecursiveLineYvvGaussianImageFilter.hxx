@@ -359,9 +359,9 @@ RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 
   const unsigned int ln = region.GetSize()[this->m_Direction];
 
-  RealType *inps = 0;
-  RealType *outs = 0;
-  RealType *scratch = 0;
+  RealType *inps = nullptr;
+  RealType *outs = nullptr;
+  RealType *scratch = nullptr;
 
   try
     {
