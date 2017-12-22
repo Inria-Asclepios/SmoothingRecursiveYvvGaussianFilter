@@ -119,7 +119,7 @@ int testCpuFilter(  std::string &filterLabel,
         std::ostringstream sizeStream;
         
         sizeStream << size[0];
-        for(int i=1; i<InputImage::ImageDimension; ++i)
+        for(unsigned int i=1; i<InputImage::ImageDimension; ++i)
         {
             sizeStream << "x"<<size[i];
         }
