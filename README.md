@@ -1,7 +1,7 @@
 General
 ------
 
-This is a module designed to work with the ITK v4 modular system; it implements the Young & Van Vliet recursive gaussian smoothing filter for GPU (OpenCL) and CPU. For details on the implementation, please refer to the Insight Journal publication: http://hdl.handle.net/10380/3425
+This is a module designed to work with the ITK modular system; it implements the Young & Van Vliet recursive gaussian smoothing filter for GPU (OpenCL) and CPU. For details on the implementation, please refer to the Insight Journal publication: http://hdl.handle.net/10380/3425
 
 Build
 -----
