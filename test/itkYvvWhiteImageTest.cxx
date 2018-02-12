@@ -44,7 +44,7 @@ int itkYvvWhiteImageTest(int argc, char *argv[])
     }
 
   unsigned int ntests;
-  unsigned int *size = new unsigned int[dim];
+  auto *size = new unsigned int[dim];
   float sigma;
   try
     {
