@@ -68,7 +68,7 @@ int getSourceImage(void *sourceImagePtr,std::string inputFilename)
       return -1;
     }
 
-    typename ImageType::Pointer *kimg = (typename ImageType::Pointer *)sourceImagePtr;
+    auto *kimg = (typename ImageType::Pointer *)sourceImagePtr;
     *kimg = readerGPU->GetOutput();
       
     (*kimg)->DisconnectPipeline();
@@ -81,7 +81,7 @@ int getSourceImage(void *sourceImagePtr,std::string inputFilename)
 template<typename ImageType >
 int createWhiteImage(void *sourceImagePtr, typename ImageType::SizeType size)
 {
-    typename ImageType::Pointer *kimg = (typename ImageType::Pointer *)sourceImagePtr;
+    auto *kimg = (typename ImageType::Pointer *)sourceImagePtr;
     typename ImageType::RegionType region;
     region.SetSize( size );
 
@@ -119,7 +119,7 @@ int testCpuFilter(  std::string &filterLabel,
         std::ostringstream sizeStream;
         
         sizeStream << size[0];
-        for(int i=1; i<InputImage::ImageDimension; ++i)
+        for(unsigned int i=1; i<InputImage::ImageDimension; ++i)
         {
             sizeStream << "x"<<size[i];
         }
@@ -154,9 +154,9 @@ int testCpuFilter(  std::string &filterLabel,
     }
     
     src->DisconnectPipeline();
-    src = 0;
-    filter = 0;
-    imgPtr=0;
+    src = nullptr;
+    filter = nullptr;
+    imgPtr=nullptr;
     return EXIT_SUCCESS;
 }
 
