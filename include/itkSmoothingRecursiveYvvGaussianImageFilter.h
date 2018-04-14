@@ -50,6 +50,8 @@ class ITK_EXPORT SmoothingRecursiveYvvGaussianImageFilter:
   public         InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
+  ITK_DISALLOW_COPY_AND_ASSIGN(SmoothingRecursiveYvvGaussianImageFilter);
+
   /** Standard class typedefs. */
   typedef SmoothingRecursiveYvvGaussianImageFilter        Self;
   typedef InPlaceImageFilter< TInputImage, TOutputImage > Superclass;
@@ -168,8 +170,6 @@ protected:
   void EnlargeOutputRequestedRegion(DataObject *output) override;
 
 private:
-  ITK_DISALLOW_COPY_AND_ASSIGN(SmoothingRecursiveYvvGaussianImageFilter);
-
   InternalGaussianFilterPointer m_SmoothingFilters[ImageDimension - 1];
   FirstGaussianFilterPointer    m_FirstSmoothingFilter;
   CastingFilterPointer          m_CastingFilter;
