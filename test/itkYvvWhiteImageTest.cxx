@@ -1,90 +1,104 @@
-#include <iostream>
-#include <fstream>
+/*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+
 #include "yvvFilter.hxx"
+#include <fstream>
+#include <iostream>
 
 #ifdef GPU
-    #include "itkGPUContextManager.h"
+#include "itkGPUContextManager.h"
 #endif
 
 #ifdef WITH_DOUBLE
-    typedef double PixelType;
+typedef double PixelType;
 #else
-    typedef float PixelType;
+typedef float PixelType;
 #endif
 
-#define die(error_msg)                                                         \
-  std::cerr << "Error: " << error_msg << std::endl;                            \
-  std::cerr << "Usage: " << argv[0]                                            \
-    << " ndimension sigma num_runs width [height] [depth]" <<  std::endl;      \
-  return EXIT_FAILURE;                                                         \
+#define die( error_msg )                                                                                 \
+  std::cerr << "Error: " << error_msg << std::endl;                                                      \
+  std::cerr << "Usage: " << argv[0] << " ndimension sigma num_runs width [height] [depth]" << std::endl; \
+  return EXIT_FAILURE;
 
-int itkYvvWhiteImageTest(int argc, char *argv[])
+int itkYvvWhiteImageTest( int argc, char* argv[] )
 {
 #ifdef GPU
-  if(!itk::IsGPUAvailable())
-  {
+  if ( !itk::IsGPUAvailable() )
+    {
     std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 #endif
 
-  if( argc <  4 )
-  {
-    die("missing arguments.");
-  }
-
-  int dim = atoi(argv[1]);
-  if( argc < 4+dim-1 )
-  {
-    die("missing arguments.");
-  }
-  if (dim == 3 && argc != 7)
+  if ( argc < 4 )
     {
-    die("missing arguments for a 3D image.");
+    die( "missing arguments." );
     }
 
-  unsigned int ntests;
-  unsigned int *size = new unsigned int[dim];
-  float sigma;
+  int dim = atoi( argv[1] );
+  if ( argc < 4 + dim - 1 )
+    {
+    die( "missing arguments." );
+    }
+  if ( dim == 3 && argc != 7 )
+    {
+    die( "missing arguments for a 3D image." );
+    }
+
+  unsigned int  ntests;
+  unsigned int* size = new unsigned int[dim];
+  float         sigma;
   try
     {
-    sigma  = atof(argv[2]);
-    ntests = atoi(argv[3]);
-    for(int i=0; i<dim; ++i)
+    sigma = atof( argv[2] );
+    ntests = atoi( argv[3] );
+    for ( int i = 0; i < dim; ++i )
       {
-      size[i] = atoi(argv[4+i]);
+        size[i] = atoi( argv[4 + i] );
       }
     }
-  catch(...)
+  catch ( ... )
     {
     delete[] size;
-    die("invalid size arguments.");
+    die( "invalid size arguments." );
     }
 
-  std::cout << ":::  Received: dim =" << dim
-    << ", sigma= " << sigma
-    << ", ntests= " << ntests
-    << ", size= ";
-  for(int i=0; i<dim; ++i)
+  std::cout << ":::  Received: dim =" << dim << ", sigma= " << sigma << ", ntests= " << ntests << ", size= ";
+  for ( int i = 0; i < dim; ++i )
     {
-    std::cout << size[i]<< " ";
+    std::cout << size[i] << " ";
     }
-  std::cout<<":::" << std::endl << std::endl;
+  std::cout << ":::" << std::endl << std::endl;
 
   int result;
 
   itk::TimeProbesCollectorBase timeCollector;
-  if( dim == 2 )
+  if ( dim == 2 )
     {
     typedef itk::Image< PixelType, 2 > ImageType;
-    ImageType::SizeType size2D = { {size[0],size[1]} };
-    result = testWhite< ImageType >(size2D, sigma, &timeCollector, ntests);
+    ImageType::SizeType                size2D = { { size[0], size[1] } };
+    result = testWhite< ImageType >( size2D, sigma, &timeCollector, ntests );
     }
-  else if( dim == 3 )
+  else if ( dim == 3 )
     {
     typedef itk::Image< PixelType, 3 > ImageType;
-    ImageType::SizeType size3D = { {size[0],size[1], size[2]} };
-    result = testWhite< ImageType >(size3D, sigma, &timeCollector, ntests);
+    ImageType::SizeType                size3D = { { size[0], size[1], size[2] } };
+    result = testWhite< ImageType >( size3D, sigma, &timeCollector, ntests );
     }
   else
     {
@@ -96,7 +110,8 @@ int itkYvvWhiteImageTest(int argc, char *argv[])
   delete[] size;
 
 #ifndef GPU
-  std::cout<<"--      ITK GPU support was not detected and/or not configured, so no GPU filters were tested.     --" << std::endl;
+  std::cout << "--      ITK GPU support was not detected and/or not configured, so no GPU filters were tested.     --"
+            << std::endl;
 #endif
 
   return result;
