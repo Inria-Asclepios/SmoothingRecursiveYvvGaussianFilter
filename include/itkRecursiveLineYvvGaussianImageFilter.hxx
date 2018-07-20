@@ -25,8 +25,6 @@
 #include "itkImageLinearConstIteratorWithIndex.h"
 #include "itkProgressReporter.h"
 
-//#define VERBOSE
-
 namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
@@ -40,31 +38,30 @@ RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
   this->InPlaceOff();
 
   m_ImageRegionSplitter = ImageRegionSplitterDirection::New();
-        #ifdef VERBOSE
-  std::cout << "-----------Line filter TYPES\n";
 
-  if ( typeid( typename TInputImage::PixelType ) == typeid( double ) )
+  if (this->GetDebug())
     {
-    std::cout << "InputPixelType double\n";
-    }
-  if ( typeid( typename TOutputImage::PixelType ) == typeid( double ) )
-    {
-    std::cout << "OutputPixelType double\n";
-    }
+    std::cout << "-----------Line filter TYPES\n";
 
-  if ( typeid( ScalarRealType ) == typeid( double ) )
-    {
-    std::cout << "ScalarRealType double\n";
-    }
+    if ( typeid( typename TInputImage::PixelType ) == typeid( double ) )
+      {
+      std::cout << "InputPixelType double\n";
+      }
+    if ( typeid( typename TOutputImage::PixelType ) == typeid( double ) )
+      {
+      std::cout << "OutputPixelType double\n";
+      }
 
-  if ( typeid( RealType ) == typeid( double ) )
-    {
-    std::cout << "RealType double\n";
-    }
+    if ( typeid( ScalarRealType ) == typeid( double ) )
+      {
+      std::cout << "ScalarRealType double\n";
+      }
 
-  /*if( typeid ( InternalRealType ) == typeid ( double ))
-          std::cout<<"InternalRealType double\n"; */
-        #endif
+    if ( typeid( RealType ) == typeid( double ) )
+      {
+      std::cout << "RealType double\n";
+      }
+    }
 }
 
 /**
@@ -75,40 +72,24 @@ void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::SetInputImage(const TInputImage *input)
 {
-/*#ifdef VERBOSE
-        std::cout<<telltale << ". itkRecursiveLineYvv::setInput \n";
-#endif*/
   // ProcessObject is not const_correct so this const_cast is required
-  ProcessObject::SetNthInput( 0,
-                              const_cast< TInputImage * >( input ) );
+  ProcessObject::SetNthInput( 0, const_cast< TInputImage * >( input ) );
 }
 
-/**
- * Get Input Image
- */
+
 template< typename TInputImage, typename TOutputImage >
 const TInputImage *
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::GetInputImage(void)
 {
-/*#ifdef VERBOSE
-        std::cout<<telltale << ". itkRecursiveLineYvv::getInput \n";
-#endif*/
-  return dynamic_cast< const TInputImage * >(
-    ( ProcessObject::GetInput(0) ) );
+  return dynamic_cast< const TInputImage * >( ( ProcessObject::GetInput(0) ) );
 }
 
-/**
- *   Compute filter for Gaussian kernel.
- */
 template< typename TInputImage, typename TOutputImage >
 void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::SetUp(ScalarRealType spacing)
 {
-/*#ifdef VERBOSE
-        std::cout<<telltale << ". itkRecursiveLineYvv::setUp\n";
-#endif*/
   const ScalarRealType sigmad = m_Sigma / spacing;
 
   // Compute q according to 16 in Young et al on Gabor filering
@@ -159,34 +140,31 @@ RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 
   m_MMatrix /= ( 1 + m_B1 - m_B2 + m_B3 ) * ( 1 - m_B1 - m_B2 - m_B3 ) * ( 1 + m_B2 + ( m_B1 - m_B3 ) * m_B3 );
 
-        #ifdef VERBOSE
-  std::cout << "cB   " << m_B << std::endl;
-  std::cout << "cB1  " << m_B1 << std::endl;
-  std::cout << "cB2  " << m_B2 << std::endl;
-  std::cout << "cB3  " << m_B3 << std::endl;
-
-  for ( int i = 0; i < 3; ++i )
+  if (this->GetDebug())
     {
-    for ( int j = 0; j < 3; ++j )
+    std::cout << "cB   " << m_B << std::endl;
+    std::cout << "cB1  " << m_B1 << std::endl;
+    std::cout << "cB2  " << m_B2 << std::endl;
+    std::cout << "cB3  " << m_B3 << std::endl;
+
+    for ( int i = 0; i < 3; ++i )
       {
-      std::cout << "cM(" << i << "," << j << ")  " << m_MMatrix(i, j) << std::endl;
+      for ( int j = 0; j < 3; ++j )
+        {
+        std::cout << "cM(" << i << "," << j << ")  " << m_MMatrix(i, j) << std::endl;
+        }
       }
     }
-        #endif
 }
 
-/**
- * Apply Recursive Filter
- */
+
+// Apply Recursive Filter
 template< typename TInputImage, typename TOutputImage >
 void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::FilterDataArray(RealType *outs, const RealType *data,
                   RealType *scratch, unsigned int ln)
 {
-//#ifdef VERBOSE
-  //std::cout<<telltale << ". itkRecursiveLineYvv::filterDataArray \n";
-//#endif*/
   /**
    * Causal direction pass
    */
@@ -264,11 +242,6 @@ void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
-/*
-#ifdef VERBOSE
-        std::cout<<telltale  << ". itkRecursiveLineYvv::EnlargeOutputRequestedRegion \n";
-#endif
-*/
   TOutputImage *out = dynamic_cast< TOutputImage * >( output );
 
   if ( out )
@@ -295,11 +268,6 @@ const ImageRegionSplitterBase *
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::GetImageRegionSplitter(void) const
 {
-/*
-#ifdef VERBOSE
-        std::cout<<telltale  << ". itkRecursiveLineYvv::SplitRequestedRegion \n";
-#endif
-*/
   return this->m_ImageRegionSplitter;
 }
 
@@ -308,11 +276,6 @@ void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::BeforeThreadedGenerateData()
 {
-/*
-#ifdef VERBOSE
-        std::cout<<telltale  << ". itkRecursiveLineYvv::BeforeThreadedGenerateData \n";
-#endif
-*/
   typedef ImageRegion< TInputImage::ImageDimension > RegionType;
 
   typename TInputImage::ConstPointer inputImage( this->GetInputImage () );
@@ -351,11 +314,6 @@ void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId)
 {
-/*
-#ifdef VERBOSE
-        std::cout <<telltale  << ". itkRecursiveLineYvv::ThreadedGenerateData \n";
-#endif
-*/
   typedef typename TOutputImage::PixelType OutputPixelType;
 
   typedef ImageLinearConstIteratorWithIndex< TInputImage > InputConstIteratorType;
@@ -419,31 +377,31 @@ RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 
   try        // this try is intended to catch an eventual AbortException.
     {
-    while ( !inputIterator.IsAtEnd() && !outputIterator.IsAtEnd() )
+  while ( !inputIterator.IsAtEnd() && !outputIterator.IsAtEnd() )
+    {
+    unsigned int i = 0;
+    while ( !inputIterator.IsAtEndOfLine() )
       {
-      unsigned int i = 0;
-      while ( !inputIterator.IsAtEndOfLine() )
-        {
-        inps[i++]      = inputIterator.Get();
-        ++inputIterator;
-        }
+      inps[i++]      = inputIterator.Get();
+      ++inputIterator;
+      }
 
-      this->FilterDataArray(outs, inps, scratch, ln);
+    this->FilterDataArray(outs, inps, scratch, ln);
 
-      unsigned int j = 0;
-      while ( !outputIterator.IsAtEndOfLine() )
-        {
-        outputIterator.Set( static_cast< OutputPixelType >( outs[j++] ) );
-        ++outputIterator;
-        }
+    unsigned int j = 0;
+    while ( !outputIterator.IsAtEndOfLine() )
+      {
+      outputIterator.Set( static_cast< OutputPixelType >( outs[j++] ) );
+      ++outputIterator;
+      }
 
-      inputIterator.NextLine();
-      outputIterator.NextLine();
+    inputIterator.NextLine();
+    outputIterator.NextLine();
 
       // Although the method name is CompletedPixel(),
       // this is being called after each line is processed
       progress.CompletedPixel();
-      }
+    }
     }
   catch ( ProcessAborted  & )
     {
@@ -472,9 +430,6 @@ void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
-/*#ifdef VERBOSE
-        std::cout<<telltale  << ". itkRecursiveLineYvv::PrintSelf \n";
-#endif*/
   Superclass::PrintSelf(os, indent);
 
   os << indent << "Direction: " << m_Direction << std::endl;

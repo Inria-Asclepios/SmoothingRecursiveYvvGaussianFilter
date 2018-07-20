@@ -126,22 +126,16 @@ public:
    use the method SetSigmaArray if you need different values along each
    axis. */
   void SetSigmaArray(const SigmaArrayType & sigmas);
-
   void SetSigma(ScalarRealType sigma);
-
   SigmaArrayType GetSigmaArray() const;
-
   ScalarRealType GetSigma() const;
 
   /** Define which normalization factor will be used for the Gaussian */
   void SetNormalizeAcrossScale(bool normalizeInScaleSpace);
-
   itkGetConstMacro(NormalizeAcrossScale, bool);
 
   void SetNumberOfThreads(ThreadIdType nb) override;
 
-  // See super class for doxygen documentation
-  //
   bool CanRunInPlace(void) const override;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -178,7 +172,6 @@ private:
 
   /** Standard deviation of the gaussian used for smoothing */
   SigmaArrayType m_Sigma;
-  int            telltale; //TODO: REMOVE
 };
 } // end namespace itk
 
