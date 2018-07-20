@@ -36,6 +36,7 @@ RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
   this->SetNumberOfRequiredInputs(1);
 
   this->InPlaceOff();
+  this->DynamicMultiThreadingOff();
 
   m_ImageRegionSplitter = ImageRegionSplitterDirection::New();
 
@@ -333,6 +334,14 @@ RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
   outputIterator.SetDirection(this->m_Direction);
 
   const unsigned int ln = region.GetSize()[this->m_Direction];
+
+  if ( ln < 4 )
+    {
+    itkExceptionMacro( "The number of pixels along direction "
+      << this->m_Direction
+      << " in this work-unit image region is less than 4."
+      << " Note: TBBMultiThreader can divide small regions into really small pieces.");
+    }
 
   RealType *inps = nullptr;
   RealType *outs = nullptr;

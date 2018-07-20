@@ -134,7 +134,7 @@ public:
   void SetNormalizeAcrossScale(bool normalizeInScaleSpace);
   itkGetConstMacro(NormalizeAcrossScale, bool);
 
-  void SetNumberOfThreads(ThreadIdType nb) override;
+  void SetNumberOfWorkUnits(ThreadIdType nb) override;
 
   bool CanRunInPlace(void) const override;
 
