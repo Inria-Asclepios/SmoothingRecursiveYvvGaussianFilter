@@ -1,7 +1,25 @@
-#ifdef GPU
+/*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
 
-#ifndef _ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
-#define _ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
+#ifndef itkGPUSmoothingRecursiveYvvGaussianImageFilter_hxx
+#define itkGPUSmoothingRecursiveYvvGaussianImageFilter_hxx
+
+#ifdef GPU
 
 #include "itkGPUSmoothingRecursiveYvvGaussianImageFilter.h"
 
@@ -435,5 +453,5 @@ GPUSmoothingRecursiveYvvGaussianImageFilter< TInputImage, TOutputImage >
 }
 } // end namespace itk
 
-#endif //_ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
 #endif //GPU
+#endif // itkGPUSmoothingRecursiveYvvGaussianImageFilter_hxx
