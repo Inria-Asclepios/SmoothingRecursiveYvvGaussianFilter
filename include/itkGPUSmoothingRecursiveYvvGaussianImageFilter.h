@@ -1,25 +1,25 @@
 /*=========================================================================
-*
-* Copyright Insight Software Consortium
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0.txt
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-*=========================================================================*/
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+
+#ifndef itkGPUSmoothingRecursiveYvvGaussianImageFilter_h
+#define itkGPUSmoothingRecursiveYvvGaussianImageFilter_h
 
 #ifdef GPU
-
-#ifndef _ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
-#define _ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
 
 #include "itkImage.h"
 #include "itkPixelTraits.h"
@@ -188,7 +188,6 @@ private:
   typename GPUOutputImage::SizeType m_requestedSize;
   /** Standard deviation of the gaussian used for smoothing */
   SigmaArrayType m_Sigma;
-  int            telltale; //TODO: REMOVE
 };
 } // end namespace itk
 
@@ -196,5 +195,6 @@ private:
     #include "itkGPUSmoothingRecursiveYvvGaussianImageFilter.hxx"
 #endif
 
-#endif //_ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
 #endif    //GPU
+
+#endif // itkGPUSmoothingRecursiveYvvGaussianImageFilter_h
