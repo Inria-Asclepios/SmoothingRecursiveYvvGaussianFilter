@@ -16,13 +16,12 @@
 *
 *=========================================================================*/
 
-#pragma once
-#ifndef _ITK_RECURSIVE_LINE_YVV_GAUSSIAN_IMAGE_FILTER_H_
-#define _ITK_RECURSIVE_LINE_YVV_GAUSSIAN_IMAGE_FILTER_H_
+#ifndef itkRecursiveLineYvvGaussianImageFilter_h
+#define itkRecursiveLineYvvGaussianImageFilter_h
 
-#include <itkInPlaceImageFilter.h>
-#include <itkNumericTraits.h>
-#include <itkImageRegionSplitterDirection.h>
+#include "itkInPlaceImageFilter.h"
+#include "itkNumericTraits.h"
+#include "itkImageRegionSplitterDirection.h"
 
 namespace itk
 {

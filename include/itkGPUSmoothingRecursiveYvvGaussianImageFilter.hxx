@@ -1,7 +1,7 @@
 #ifdef GPU
 
-#ifndef _ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
-#define _ITK_GPU_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
+#ifndef itkGPUSmoothingRecursiveYvvGaussianImageFilter_hxx
+#define itkGPUSmoothingRecursiveYvvGaussianImageFilter_hxx
 
 #include "itkGPUSmoothingRecursiveYvvGaussianImageFilter.h"
 
