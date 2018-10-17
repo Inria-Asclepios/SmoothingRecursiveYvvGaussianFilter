@@ -1,6 +1,5 @@
-#pragma once
-#ifndef _ITK_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
-#define _ITK_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
+#ifndef itkSmoothingRecursiveYvvGaussianImageFilter_hxx
+#define itkSmoothingRecursiveYvvGaussianImageFilter_hxx
 
 #include "itkSmoothingRecursiveYvvGaussianImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"

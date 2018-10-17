@@ -15,10 +15,9 @@
 * limitations under the License.
 *
 *=========================================================================*/
-#pragma once
 
-#ifndef _ITK_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
-#define _ITK_SMOOTHING_RECURSIVE_YVV_GAUSSIAN_IMAGE_FILTER_H_
+#ifndef itkSmoothingRecursiveYvvGaussianImageFilter_h
+#define itkSmoothingRecursiveYvvGaussianImageFilter_h
 
 #include "itkRecursiveLineYvvGaussianImageFilter.h"
 #include "itkCastImageFilter.h"

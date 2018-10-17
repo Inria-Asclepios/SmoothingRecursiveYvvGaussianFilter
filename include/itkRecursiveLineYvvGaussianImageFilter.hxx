@@ -1,6 +1,5 @@
-#pragma once
-#ifndef _ITK_RECURSIVE_LINE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
-#define _ITK_RECURSIVE_LINE_YVV_GAUSSIAN_IMAGE_FILTER_HXX_
+#ifndef itkRecursiveLineYvvGaussianImageFilter_hxx
+#define itkRecursiveLineYvvGaussianImageFilter_hxx
 
 #include "itkRecursiveLineYvvGaussianImageFilter.h"
 #include "itkObjectFactory.h"
