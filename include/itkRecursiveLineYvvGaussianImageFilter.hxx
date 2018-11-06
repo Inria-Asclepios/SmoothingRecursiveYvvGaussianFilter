@@ -243,7 +243,7 @@ void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
-  TOutputImage *out = dynamic_cast< TOutputImage * >( output );
+  auto *out = dynamic_cast< TOutputImage * >( output );
 
   if ( out )
     {
@@ -277,7 +277,7 @@ void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::BeforeThreadedGenerateData()
 {
-  typedef ImageRegion< TInputImage::ImageDimension > RegionType;
+  using RegionType = ImageRegion< TInputImage::ImageDimension >;
 
   typename TInputImage::ConstPointer inputImage( this->GetInputImage () );
   typename TOutputImage::Pointer     outputImage( this->GetOutput() );
@@ -315,12 +315,12 @@ void
 RecursiveLineYvvGaussianImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId)
 {
-  typedef typename TOutputImage::PixelType OutputPixelType;
+  using OutputPixelType = typename TOutputImage::PixelType;
 
-  typedef ImageLinearConstIteratorWithIndex< TInputImage > InputConstIteratorType;
-  typedef ImageLinearIteratorWithIndex< TOutputImage >     OutputIteratorType;
+  using InputConstIteratorType = ImageLinearConstIteratorWithIndex< TInputImage >;
+  using OutputIteratorType = ImageLinearIteratorWithIndex< TOutputImage >;
 
-  typedef ImageRegion< TInputImage::ImageDimension > RegionType;
+  using RegionType = ImageRegion< TInputImage::ImageDimension >;
 
   typename TInputImage::ConstPointer inputImage( this->GetInputImage () );
   typename TOutputImage::Pointer     outputImage( this->GetOutput() );
