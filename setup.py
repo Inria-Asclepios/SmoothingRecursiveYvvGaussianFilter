@@ -12,15 +12,15 @@ except ImportError:
     sys.exit(1)
 
 setup(
-    name='smoothingrecursiveyvvgaussianfilter',
+    name='itk-smoothingrecursiveyvvgaussianfilter',
     version='0.0.1',
     author='Irina Vidal Migallón',
     author_email='irina.vidal-migallon@inria.fr',
     packages=['itk'],
     package_dir={'itk': 'itk'},
-    download_url=r'https://github.com/InsightSoftwareConsortium/SmoothingRecursiveYvvGaussianFilter',
+    download_url=r'https://github.com/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter',
     description=r'Young & Van Vliet recursive Gaussian smoothing filter for GPU (OpenCL) and CPU',
-    long_description='SmoothingRecursiveYvvGaussianFilter provides a GPU'
+    long_description='ITKSmoothingRecursiveYvvGaussianFilter provides a GPU'
                      '(OpenCL) and CPU implementation of the computationally'
                      'efficient forward and backward IIR Young & Van Vliet'
                      'recursive Gaussian smoothing filter.\n'
@@ -48,8 +48,8 @@ setup(
         "Operating System :: MacOS"
         ],
     license='Apache',
-    keywords='ITK InsightToolkit',
-    url=r'https://itk.org/',
+    keywords='ITK InsightToolkit smoothing',
+    url=r'https://github.com/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter',
     install_requires=[
         r'itk'
     ]

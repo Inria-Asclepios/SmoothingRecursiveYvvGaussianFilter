@@ -1,14 +1,14 @@
-SmoothingRecursiveYvvGaussianFilter
-===================================
+ITKSmoothingRecursiveYvvGaussianFilter
+======================================
 
-.. |CircleCI| image:: https://circleci.com/gh/InsightSoftwareConsortium/SmoothingRecursiveYvvGaussianFilter.svg?style=shield
-    :target: https://circleci.com/gh/InsightSoftwareConsortium/SmoothingRecursiveYvvGaussianFilter
+.. |CircleCI| image:: https://circleci.com/gh/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter.svg?style=shield
+    :target: https://circleci.com/gh/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter
 
-.. |TravisCI| image:: https://travis-ci.org/InsightSoftwareConsortium/SmoothingRecursiveYvvGaussianFilter.svg?branch=master
-    :target: https://travis-ci.org/InsightSoftwareConsortium/SmoothingRecursiveYvvGaussianFilter
+.. |TravisCI| image:: https://travis-ci.org/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter.svg?branch=master
+    :target: https://travis-ci.org/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter
 
-.. |AppVeyor| image:: https://img.shields.io/appveyor/ci/InsightSoftwareConsortium/smoothingrecursiveyvvgaussianfilter.svg
-    :target: https://ci.appveyor.com/project/InsightSoftwareConsortium/smoothingrecursiveyvvgaussianfilter
+.. |AppVeyor| image:: https://img.shields.io/appveyor/ci/InsightSoftwareConsortium/itksmoothingrecursiveyvvgaussianfilter.svg
+    :target: https://ci.appveyor.com/project/InsightSoftwareConsortium/itksmoothingrecursiveyvvgaussianfilter
 
 =========== =========== ===========
    Linux      macOS       Windows
