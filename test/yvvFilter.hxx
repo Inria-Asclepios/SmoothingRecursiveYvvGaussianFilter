@@ -110,13 +110,14 @@ template< typename FilterType >
 int testCpuFilter( std::string& filterLabel, std::string& inputFilename, typename FilterType::InputImageType::SizeType size,
                float sigma, std::string parameters, itk::TimeProbesCollectorBase* timeCollector )
 {
-  typedef typename FilterType::InputImageType InputImage;
-  typename InputImage::Pointer                src;
-  void*                                       imgPtr = &src;
-
   using InputImage = typename FilterType::InputImageType;
   typename InputImage::Pointer src;
   void *imgPtr = &src;
+
+  if( inputFilename.empty() )
+    {
+    createWhiteImage< InputImage >( imgPtr, size );
+    //createStepImage< InputImage >( imgPtr, size );
 
     std::ostringstream sizeStream;
 
