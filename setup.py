@@ -20,14 +20,14 @@ setup(
     package_dir={'itk': 'itk'},
     download_url=r'https://github.com/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter',
     description=r'Young & Van Vliet recursive Gaussian smoothing filter for GPU (OpenCL) and CPU',
-    long_description='ITKSmoothingRecursiveYvvGaussianFilter provides a GPU'
-                     '(OpenCL) and CPU implementation of the computationally'
-                     'efficient forward and backward IIR Young & Van Vliet'
+    long_description='itk-smoothingrecursiveyvvgaussianfilter provides a GPU '
+                     '(OpenCL) and CPU implementation of the computationally '
+                     'efficient forward and backward IIR Young & Van Vliet '
                      'recursive Gaussian smoothing filter.\n'
-                     'Please refer to:'
+                     'Please refer to:\n'
                      'Vidal-Migallon I., Commowick O., Pennec X., Dauguet J., Vercauteren T.,'
-                     '“GPU and CPU implementation of Young - Van Vliet\'s Recursive Gaussian Smoothing Filter”, '
-                     'Insight Journal, http://hdl.handle.net/10380/3425, 2013.',
+                     '"GPU and CPU implementation of Young - Van Vliet\'s Recursive Gaussian Smoothing Filter", '
+                     'Insight Journal, January-December 2013, http://hdl.handle.net/10380/3425.',
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
@@ -48,7 +48,7 @@ setup(
         "Operating System :: MacOS"
         ],
     license='Apache',
-    keywords='ITK InsightToolkit smoothing',
+    keywords='ITK InsightToolkit Smoothing',
     url=r'https://github.com/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter',
     install_requires=[
         r'itk'
