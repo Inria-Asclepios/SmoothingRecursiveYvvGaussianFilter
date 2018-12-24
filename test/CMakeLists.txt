@@ -42,29 +42,17 @@ SET(TEST_DATA_ROOT "${${itk-module}_SOURCE_DIR}/Data")
 itk_add_test(NAME itkCPURecursiveYvvGaussianImageFilterTest2D
   COMMAND ${itk-module}TestDriver
       itkCPURecursiveYvvGaussianImageFilterTest
-      ${TEST_DATA_ROOT}/512ex.jpg
-      2
-      12.0
-      4
-      )
+      ${TEST_DATA_ROOT}/512ex.jpg 2 12.0 4)
 
 itk_add_test(NAME itkYvvBenchmark2D
     COMMAND ${itk-module}TestDriver
     itkYvvBenchmark
-    ${TEST_DATA_ROOT}/512ex.jpg
-    2
-    12.0
-    4
-    )
+    ${TEST_DATA_ROOT}/512ex.jpg 2 12.0 4)
 
 itk_add_test(NAME itkYvvBenchmark3D
     COMMAND ${itk-module}TestDriver
     itkYvvBenchmark
-    ${TEST_DATA_ROOT}/256x256x64.tif
-    3
-    12.0
-    2
-    )
+    ${TEST_DATA_ROOT}/256x256x64.tif 3 12.0 2)
 
 itk_add_test(NAME itkYvvWhiteImageTest2D
     COMMAND ${itk-module}TestDriver
@@ -80,26 +68,15 @@ if (ITK_USE_GPU)
     itk_add_test(NAME itkGPURecursiveYvvGaussianImageFilterTest2DLow
         COMMAND ${itk-module}TestDriver
         itkGPURecursiveYvvGaussianImageFilterTest
-        ${TEST_DATA_ROOT}/512ex.jpg
-        2
-        0.5 #Lower limit for sigma
-        1
-        )
+        ${TEST_DATA_ROOT}/512ex.jpg 2 0.5 1)
         
     itk_add_test(NAME itkGPURecursiveYvvGaussianImageFilterTest2D
         COMMAND ${itk-module}TestDriver
         itkGPURecursiveYvvGaussianImageFilterTest
-        ${TEST_DATA_ROOT}/512ex.jpg
-        2
-        20
-        1
-        )
+        ${TEST_DATA_ROOT}/512ex.jpg 2 20 1)
 
     itk_add_test(NAME itkYvvGpuCpuSimilarityTest2D
         COMMAND ${itk-module}TestDriver
         itkYvvGpuCpuSimilarityTest
-        ${TEST_DATA_ROOT}/512ex.jpg
-        2
-        14
-        )
+        ${TEST_DATA_ROOT}/512ex.jpg 2 14)
 endif()
