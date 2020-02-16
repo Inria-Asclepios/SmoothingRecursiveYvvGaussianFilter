@@ -2,7 +2,7 @@ itk_module_test()
 
 if (ITK_USE_GPU)
 
-  ADD_DEFINITIONS(-DGPU)
+  add_definitions(-DGPU)
 
   if(GPU_HANDLES_DOUBLE)
      add_definitions(-DWITH_DOUBLE)
@@ -10,13 +10,13 @@ if (ITK_USE_GPU)
 
   if(NVIDIA_GPU)
       add_definitions(-DNVIDIA)
-      MESSAGE(STATUS "NVIDIA platform detected")
+      message(STATUS "NVIDIA platform detected")
   endif()
 
-  INCLUDE_DIRECTORIES("${${itk-module}_SOURCE_DIR}/include")
-  INCLUDE_DIRECTORIES("${${itk-module}KernelDir}")
+  include_directories("${${itk-module}_SOURCE_DIR}/include")
+  include_directories("${${itk-module}KernelDir}")
 
-  SET(${itk-module}Tests
+  set(${itk-module}Tests
     itkCPURecursiveYvvGaussianImageFilterTest.cxx
     itkGPURecursiveYvvGaussianImageFilterTest.cxx
     itkYvvGpuCpuSimilarityTest.cxx
@@ -26,7 +26,7 @@ if (ITK_USE_GPU)
 else()
     #No GPU, but CPU user will probably want double-precision.
     add_definitions(-DWITH_DOUBLE)
-    SET(${itk-module}Tests
+    set(${itk-module}Tests
     itkCPURecursiveYvvGaussianImageFilterTest.cxx
     itkYvvBenchmark.cxx
     itkYvvWhiteImageTest.cxx
