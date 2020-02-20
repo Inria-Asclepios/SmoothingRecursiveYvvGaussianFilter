@@ -41,18 +41,17 @@ namespace itk
  * \ingroup SmoothingRecursiveYvvGaussianFilter
  */
 
-template< typename TInputImage, typename TOutputImage = TInputImage >
-class ITK_EXPORT RecursiveLineYvvGaussianImageFilter:
-  public         InPlaceImageFilter< TInputImage, TOutputImage >
+template <typename TInputImage, typename TOutputImage = TInputImage>
+class ITK_EXPORT RecursiveLineYvvGaussianImageFilter : public InPlaceImageFilter<TInputImage, TOutputImage>
 {
 public:
   ITK_DISALLOW_COPY_AND_ASSIGN(RecursiveLineYvvGaussianImageFilter);
 
   /** Standard class type alias. */
   using Self = RecursiveLineYvvGaussianImageFilter;
-  using Superclass = InPlaceImageFilter< TInputImage, TOutputImage >;
-  using Pointer = SmartPointer< Self >;
-  using ConstPointer = SmartPointer< const Self >;
+  using Superclass = InPlaceImageFilter<TInputImage, TOutputImage>;
+  using Pointer = SmartPointer<Self>;
+  using ConstPointer = SmartPointer<const Self>;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -70,13 +69,13 @@ public:
    * meant for scalars.
    */
   using InputPixelType = typename TInputImage::PixelType;
-        #ifdef WITH_DOUBLE
-  using RealType = typename NumericTraits< InputPixelType >::RealType;
-  using ScalarRealType = typename NumericTraits< InputPixelType >::ScalarRealType;
-        #else
-  using RealType = typename NumericTraits< InputPixelType >::FloatType;
-  using ScalarRealType = typename NumericTraits< InputPixelType >::FloatType;
-        #endif
+#ifdef WITH_DOUBLE
+  using RealType = typename NumericTraits<InputPixelType>::RealType;
+  using ScalarRealType = typename NumericTraits<InputPixelType>::ScalarRealType;
+#else
+  using RealType = typename NumericTraits<InputPixelType>::FloatType;
+  using ScalarRealType = typename NumericTraits<InputPixelType>::FloatType;
+#endif
 
   using OutputImageRegionType = typename TOutputImage::RegionType;
 
@@ -93,10 +92,12 @@ public:
   itkSetMacro(Direction, unsigned int);
 
   /** Set Input Image. */
-  void SetInputImage(const TInputImage *);
+  void
+  SetInputImage(const TInputImage *);
 
   /** Get Input Image. */
-  const TInputImage * GetInputImage(void);
+  const TInputImage *
+  GetInputImage(void);
 
   /** Set/Get the flag for normalizing the gaussian over scale space.
    When this flag is ON the filter will be normalized in such a way
@@ -120,17 +121,22 @@ public:
    * kernel.  The default is 1.0.  */
   itkGetConstMacro(Sigma, ScalarRealType);
   itkSetMacro(Sigma, ScalarRealType);
+
 protected:
   RecursiveLineYvvGaussianImageFilter();
   ~RecursiveLineYvvGaussianImageFilter() override {}
-  void PrintSelf(std::ostream & os, Indent indent) const override;
+  void
+  PrintSelf(std::ostream & os, Indent indent) const override;
 
   /** GenerateData (apply) the filter. */
-  void BeforeThreadedGenerateData() override;
+  void
+  BeforeThreadedGenerateData() override;
 
-  void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId) override;
+  void
+  ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId) override;
 
-  const ImageRegionSplitterBase * GetImageRegionSplitter(void) const override;
+  const ImageRegionSplitterBase *
+  GetImageRegionSplitter(void) const override;
 
   /** RecursiveLineYvvGaussianImageFilter needs all of the input only in the
    *  "Direction" dimension. Therefore we enlarge the output's
@@ -140,13 +146,15 @@ protected:
    *
    * \sa ImageToImageFilter::GenerateInputRequestedRegion()
    */
-  void EnlargeOutputRequestedRegion(DataObject *output) override;
+  void
+  EnlargeOutputRequestedRegion(DataObject * output) override;
 
   /** Set up the coefficients of the filter to approximate a specific kernel.
    * Typically it can be used to approximate a Gaussian or one of its
    * derivatives. Parameter is the spacing along the dimension to
    * filter. */
-  virtual void SetUp(ScalarRealType spacing);
+  virtual void
+  SetUp(ScalarRealType spacing);
 
   /** Apply the Recursive Filter to an array of data.  This method is called
    * for each line of the volume. Parameter "scratch" is a scratch
@@ -154,8 +162,8 @@ protected:
    * parameters "outs" and "data". The scratch area must be allocated
    * outside of this routine (this avoids memory allocation and
    * deallocation in the inner loop of the overall algorithm. */
-  void FilterDataArray(RealType *outs, const RealType *data, RealType *scratch,
-                       unsigned int ln);
+  void
+  FilterDataArray(RealType * outs, const RealType * data, RealType * scratch, unsigned int ln);
 
 protected:
   /** Causal and anti-causal coefficients that multiply the input data. These
@@ -166,7 +174,8 @@ protected:
   ScalarRealType m_B;
 
   // Initialization matrix for anti-causal pass
-  vnl_matrix< ScalarRealType > m_MMatrix;
+  vnl_matrix<ScalarRealType> m_MMatrix;
+
 private:
   /** Direction in which the filter is to be applied
    * this should be in the range [0,ImageDimension-1]. */
@@ -182,7 +191,7 @@ private:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-#include "itkRecursiveLineYvvGaussianImageFilter.hxx"
+#  include "itkRecursiveLineYvvGaussianImageFilter.hxx"
 #endif
 
 #endif // itkRecursiveLineYvvGaussianImageFilter_h

@@ -21,54 +21,55 @@
 #include <iostream>
 
 #ifdef GPU
-#include "itkGPUContextManager.h"
+#  include "itkGPUContextManager.h"
 #endif
 
 #ifdef WITH_DOUBLE
-  using PixelType = double;
+using PixelType = double;
 #else
-  using PixelType = float;
+using PixelType = float;
 #endif
 
-int itkGPURecursiveYvvGaussianImageFilterTest( int argc, char* argv[] )
+int
+itkGPURecursiveYvvGaussianImageFilterTest(int argc, char * argv[])
 {
 #ifdef GPU
-  if ( !itk::IsGPUAvailable() )
-    {
+  if (!itk::IsGPUAvailable())
+  {
     std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
     return EXIT_FAILURE;
-    }
+  }
 #endif
 
-  if ( argc < 5 )
-    {
+  if (argc < 5)
+  {
     std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "[Usage] " << argv[0] << " image_file ndimension sigma num_runs" << std::endl;
     return EXIT_FAILURE;
-    }
+  }
 
-  std::string  inputFilename( argv[1] );
-  unsigned int dim = std::stoi( argv[2] );
-  float        sigma = std::stod( argv[3] );
-  unsigned int ntests = std::stoi( argv[4] );
+  std::string  inputFilename(argv[1]);
+  unsigned int dim = std::stoi(argv[2]);
+  float        sigma = std::stod(argv[3]);
+  unsigned int ntests = std::stoi(argv[4]);
 
 
-  int res = EXIT_SUCCESS;
+  int                          res = EXIT_SUCCESS;
   itk::TimeProbesCollectorBase timeCollector;
 
-  if ( dim == 2 )
-    {
-    res = testImage< itk::Image< PixelType, 2 > >( inputFilename, sigma, &timeCollector, ntests );
-    }
-  else if ( dim == 3 )
-    {
-    res = testImage< itk::Image< PixelType, 3 > >( inputFilename, sigma, &timeCollector, ntests );
-    }
+  if (dim == 2)
+  {
+    res = testImage<itk::Image<PixelType, 2>>(inputFilename, sigma, &timeCollector, ntests);
+  }
+  else if (dim == 3)
+  {
+    res = testImage<itk::Image<PixelType, 3>>(inputFilename, sigma, &timeCollector, ntests);
+  }
   else
-    {
+  {
     std::cerr << "Error: only 2 or 3 dimensions allowed, " << dim << " selected." << std::endl;
     res = EXIT_FAILURE;
-    }
+  }
 
   timeCollector.Report();
 #ifndef GPU

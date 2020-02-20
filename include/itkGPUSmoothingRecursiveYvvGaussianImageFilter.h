@@ -21,13 +21,13 @@
 
 #ifdef GPU
 
-#include "itkImage.h"
-#include "itkPixelTraits.h"
-#include "itkCommand.h"
-#include "itkFixedArray.h"
-#include "itkSmoothingRecursiveYvvGaussianImageFilter.h"
-#include "itkOpenCLUtil.h"
-#include "itkGPUImageToImageFilter.h"
+#  include "itkImage.h"
+#  include "itkPixelTraits.h"
+#  include "itkCommand.h"
+#  include "itkFixedArray.h"
+#  include "itkSmoothingRecursiveYvvGaussianImageFilter.h"
+#  include "itkOpenCLUtil.h"
+#  include "itkGPUImageToImageFilter.h"
 
 namespace itk
 {
@@ -48,58 +48,58 @@ namespace itk
 
 itkGPUKernelClassMacro(GPUSmoothingRecursiveYvvGaussianImageFilterKernel);
 
-template< typename TInputImage, typename TOutputImage = TInputImage >
-class ITK_EXPORT GPUSmoothingRecursiveYvvGaussianImageFilter:
-  public         GPUImageToImageFilter< TInputImage, TOutputImage,
-                                        SmoothingRecursiveYvvGaussianImageFilter< TInputImage, TOutputImage > >
+template <typename TInputImage, typename TOutputImage = TInputImage>
+class ITK_EXPORT GPUSmoothingRecursiveYvvGaussianImageFilter
+  : public GPUImageToImageFilter<TInputImage,
+                                 TOutputImage,
+                                 SmoothingRecursiveYvvGaussianImageFilter<TInputImage, TOutputImage>>
 {
 public:
   ITK_DISALLOW_COPY_AND_ASSIGN(GPUSmoothingRecursiveYvvGaussianImageFilter);
 
   /** Standard class type alias. */
   using Self = GPUSmoothingRecursiveYvvGaussianImageFilter;
-  //typedef SmoothingRecursiveYvvGaussianImageFilter<TInputImage,TOutputImage>
+  // typedef SmoothingRecursiveYvvGaussianImageFilter<TInputImage,TOutputImage>
   //   CPUSuperclass;
-  using Superclass = GPUImageToImageFilter< TInputImage, TOutputImage,
-                                 SmoothingRecursiveYvvGaussianImageFilter< TInputImage, TOutputImage > >;
-  using GPUSuperclass = GPUImageToImageFilter< TInputImage, TOutputImage,
-                                 SmoothingRecursiveYvvGaussianImageFilter< TInputImage, TOutputImage > >;
-  using Pointer = SmartPointer< Self >;
-  using ConstPointer = SmartPointer< const Self >;
+  using Superclass = GPUImageToImageFilter<TInputImage,
+                                           TOutputImage,
+                                           SmoothingRecursiveYvvGaussianImageFilter<TInputImage, TOutputImage>>;
+  using GPUSuperclass = GPUImageToImageFilter<TInputImage,
+                                              TOutputImage,
+                                              SmoothingRecursiveYvvGaussianImageFilter<TInputImage, TOutputImage>>;
+  using Pointer = SmartPointer<Self>;
+  using ConstPointer = SmartPointer<const Self>;
 
   /** Pixel Type of the input image */
   using InputImageType = TInputImage;
   using OutputImageType = TOutputImage;
   using PixelType = typename TInputImage::PixelType;
-        #ifdef WITH_DOUBLE
-  using RealType = typename NumericTraits< PixelType >::RealType;
-  using ScalarRealType = typename NumericTraits< PixelType >::ScalarRealType;
-        #else
-  using RealType = typename NumericTraits< PixelType >::FloatType;
-  using ScalarRealType = typename NumericTraits< PixelType >::FloatType;
-        #endif
+#  ifdef WITH_DOUBLE
+  using RealType = typename NumericTraits<PixelType>::RealType;
+  using ScalarRealType = typename NumericTraits<PixelType>::ScalarRealType;
+#  else
+  using RealType = typename NumericTraits<PixelType>::FloatType;
+  using ScalarRealType = typename NumericTraits<PixelType>::FloatType;
+#  endif
 
-  using GPUInputImage = typename itk::GPUTraits< TInputImage >::Type;
-  using GPUOutputImage = typename itk::GPUTraits< TOutputImage >::Type;
+  using GPUInputImage = typename itk::GPUTraits<TInputImage>::Type;
+  using GPUOutputImage = typename itk::GPUTraits<TOutputImage>::Type;
 
   /** Runtime information support. */
-  itkTypeMacro(GPUSmoothingRecursiveYvvGaussianImageFilter,
-               GPUImageToImageFilter);
+  itkTypeMacro(GPUSmoothingRecursiveYvvGaussianImageFilter, GPUImageToImageFilter);
 
   /** Image dimension. */
   static constexpr unsigned int ImageDimension = TInputImage::ImageDimension;
 
   /** Define the type for the sigma array */
-  using SigmaArrayType = FixedArray< ScalarRealType,
-                      itkGetStaticConstMacro(ImageDimension) >;
+  using SigmaArrayType = FixedArray<ScalarRealType, itkGetStaticConstMacro(ImageDimension)>;
 
   /** Define the image type for internal computations
    RealType is usually 'double' in NumericTraits.
    Here we prefer float in order to save memory.  */
 
-  using InternalRealType = typename NumericTraits< PixelType >::FloatType;
-  using RealImageType = GPUImage< InternalRealType,
-                    itkGetStaticConstMacro(ImageDimension) >;
+  using InternalRealType = typename NumericTraits<PixelType>::FloatType;
+  using RealImageType = GPUImage<InternalRealType, itkGetStaticConstMacro(ImageDimension)>;
 
   /**  Pointer to the Output Image */
   using OutputImagePointer = typename OutputImageType::Pointer;
@@ -111,61 +111,73 @@ public:
    may use the method SetSigma to set the same value across each axis or
    use the method SetSigmaArray if you need different values along each
    axis. */
-  void SetSigmaArray(const SigmaArrayType & sigmas);
+  void
+  SetSigmaArray(const SigmaArrayType & sigmas);
 
-  void SetSigma(ScalarRealType sigma);
+  void
+  SetSigma(ScalarRealType sigma);
 
-  SigmaArrayType GetSigmaArray() const;
+  SigmaArrayType
+  GetSigmaArray() const;
 
-  ScalarRealType GetSigma() const;
+  ScalarRealType
+  GetSigma() const;
 
   /** Define which normalization factor will be used for the Gaussian */
-  void SetNormalizeAcrossScale(bool normalizeInScaleSpace);
+  void
+  SetNormalizeAcrossScale(bool normalizeInScaleSpace);
 
   itkGetConstMacro(NormalizeAcrossScale, bool);
 
-  virtual void SetUp(ScalarRealType spacing);
+  virtual void
+  SetUp(ScalarRealType spacing);
 
-#ifdef ITK_USE_CONCEPT_CHECKING
+#  ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
-  itkConceptMacro( InputHasNumericTraitsCheck,
-                   ( Concept::HasNumericTraits< PixelType > ) );
+  itkConceptMacro(InputHasNumericTraitsCheck, (Concept::HasNumericTraits<PixelType>));
   /** End concept checking */
-#endif
+#  endif
   /** Get OpenCL Kernel source as a string, creates a GetOpenCLSource method */
   itkGetOpenCLSourceFromKernelMacro(GPUSmoothingRecursiveYvvGaussianImageFilterKernel);
-  void SetInput(const TInputImage *input);
+  void
+  SetInput(const TInputImage * input);
   using Superclass::SetInput;
+
 protected:
   GPUSmoothingRecursiveYvvGaussianImageFilter();
   virtual ~GPUSmoothingRecursiveYvvGaussianImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  void
+  PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */
-  void GPUGenerateData(void);
+  void
+  GPUGenerateData(void);
 
   /** GPUSmoothingRecursiveYvvGaussianImageFilter needs all of the input to produce an
    * output. Therefore, GPUSmoothingRecursiveYvvGaussianImageFilter needs to provide
    * an implementation for GenerateInputRequestedRegion in order to inform
    * the pipeline execution model.
    * \sa ImageToImageFilter::GenerateInputRequestedRegion() */
-  virtual void GenerateInputRequestedRegion() throw( InvalidRequestedRegionError );
+  virtual void
+  GenerateInputRequestedRegion() throw(InvalidRequestedRegionError);
 
   // Override since the filter produces the entire dataset
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  void
+  EnlargeOutputRequestedRegion(DataObject * output);
 
-  void AllocateGPUCoefficients();
+  void
+  AllocateGPUCoefficients();
 
   std::ostringstream defines;
 
-  ScalarRealType  m_B1;
-  ScalarRealType  m_B2;
-  ScalarRealType  m_B3;
-  ScalarRealType  m_B;
-  ScalarRealType *m_Bvalues;
+  ScalarRealType   m_B1;
+  ScalarRealType   m_B2;
+  ScalarRealType   m_B3;
+  ScalarRealType   m_B;
+  ScalarRealType * m_Bvalues;
 
   // Initialization matrix for anti-causal pass
-  ScalarRealType *m_CPUMatrix;
+  ScalarRealType * m_CPUMatrix;
 
   using GPUDataPointer = GPUDataManager::Pointer;
 
@@ -174,24 +186,25 @@ protected:
   GPUDataPointer m_GPULocalDataManager;
 
 private:
-  void BuildKernel();
+  void
+  BuildKernel();
 
   /** Normalize the image across scale space */
   bool m_NormalizeAcrossScale;
 
-  int m_FilterGPUKernelHandle;
-  typename GPUInputImage::Pointer inPtr;
-  typename GPUOutputImage::Pointer otPtr;
+  int                               m_FilterGPUKernelHandle;
+  typename GPUInputImage::Pointer   inPtr;
+  typename GPUOutputImage::Pointer  otPtr;
   typename GPUOutputImage::SizeType m_requestedSize;
   /** Standard deviation of the gaussian used for smoothing */
   SigmaArrayType m_Sigma;
 };
 } // end namespace itk
 
-#ifndef ITK_MANUAL_INSTANTIATION
-    #include "itkGPUSmoothingRecursiveYvvGaussianImageFilter.hxx"
-#endif
+#  ifndef ITK_MANUAL_INSTANTIATION
+#    include "itkGPUSmoothingRecursiveYvvGaussianImageFilter.hxx"
+#  endif
 
-#endif    //GPU
+#endif // GPU
 
 #endif // itkGPUSmoothingRecursiveYvvGaussianImageFilter_h
