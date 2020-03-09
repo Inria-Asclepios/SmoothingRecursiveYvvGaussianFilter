@@ -1,3 +1,16 @@
+WARNING
+-------
+
+The official code for this functionality is now forked here:
+
+https://github.com/InsightSoftwareConsortium/ITKSmoothingRecursiveYvvGaussianFilter
+
+therefore we will archive this repo.
+
+
+
+---------------------------------------------------------------------------------------------
+
 General
 ------
 
